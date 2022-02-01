@@ -1,0 +1,26 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.titleOrange{
+    color: #FF6600;
+    font-weight:bolder;
+    font-size: 58px;
+}
+
+.titleWhite{
+    color: white;
+    font-weight: normal;
+    font-size: 48px;
+}
+
+.searchClear{
+    position: absolute;
+    right: 10px;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    cursor: pointer
+}
