@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { isMobile } from 'react-device-detect';
 import axios from 'axios';
 import FeeBlock from './FeeBlock';
 
 const FeePriority = () => {
     const [ feePriority, setFeePriority ] = useState([]);
+    let style = '';
 
     useEffect(() => {
         axios.get('https://mempool.space/api/v1/fees/recommended')
@@ -18,10 +20,16 @@ const FeePriority = () => {
             .catch(err => console.log(err))
     }, []);
 
+    if(isMobile){
+        style = "d-flex justify-content-between p-3"
+    } else {
+        style = "d-flex justify-content-between p-3 col-6";
+    }
+
     return (
         <div 
-            className="d-flex justify-content-between col-6 p-3"
-            style={{border: '2px solid #CC33CC'}}>
+            className={style}
+            style={{border: '2px solid #CC33CC', borderRadius: '7px', overflowX: 'hidden'}}>
             {feePriority.map((item, i) => (
                 <FeeBlock key={i} feeData={item} />
             ))}

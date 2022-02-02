@@ -11,13 +11,13 @@ const FeeBlock = (props) => {
                     <p className="m-0" style={{color: '#CC33CC', fontSize: '10px'}}>vB</p>
                 </div>
                 {feeData.priority === "minimumFee" && <p className="m-0 text-white">min</p>}
-                {feeData.priority === "hourFee" && <p className="m-0 text-white">low</p>}
+                {feeData.priority === "hourFee" && <p className="m-0 text-white">slow</p>}
                 {feeData.priority === "halfHourFee" && <p className="m-0 text-white">mid</p>}
-                {feeData.priority === "fastestFee" && <p className="m-0 text-white">high</p>}
+                {feeData.priority === "fastestFee" && <p className="m-0 text-white">fast</p>}
             </div>
-            <div className="d-flex align-items-start">
+            <div className="d-flex align-items-start justify-content-center">
                 <p className="m-0" style={{color: '#CC33CC'}}>($0.00)</p>
-                {feeData.priority === "minimumFee" ? <p className="m-0 text-white">fee</p> : <p className="m-0 text-white">fee</p>}
+                {/* {feeData.priority === "minimumFee" ? <p className="m-0 text-white">fee</p> : <p className="m-0 text-white">fee</p>} */}
             </div>
         </div>
     )
