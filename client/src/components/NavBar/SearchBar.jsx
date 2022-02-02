@@ -1,22 +1,49 @@
 import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
+import axios from 'axios';
 import styles from './SearchBar.module.css';
 
 const SearchBar = (props) => {
-    const { setSelectedBlock } = props;
+    const { setSelectedBlock, setSelectedTransaction } = props;
     const [ searchInput, setSearchInput ] = useState('');
     let style = '';
+    
+        if(isMobile) {
+            style = "d-flex align-items-center position-relative"
+        } else {
+            style = "d-flex align-items-center position-relative col-6";
+        }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (searchInput.length < 10) {
+            axios.get(`https://mempool.space/api/block-height/${searchInput}`)
+                .then(res => {
+                    // console.log(res.data);
+                    setSelectedBlock(res.data)
+                })
+                .catch(err => console.log(err))
+        }
+        else if (searchInput.length === 64 && searchInput.startsWith('0'*7)){
+            setSelectedBlock(searchInput);
+        }
+        else {
+            axios.get(`https://mempool.space/api/tx/${searchInput}/status`)
+                .then(res => {
+                    // console.log(res.data);
+                    setSelectedBlock(res.data.block_hash);
+                })
+                .catch(err => console.log(err))
+            // axios.get(`https://mempool.space/api/tx/${searchInput}`)
+            //     .then(res => {
+            //         console.log(res.data);
+            //         setSelectedTransaction(res.data);
+            //     })
+            //     .catch(err => console.log(err))
+            setSelectedTransaction(searchInput)
+        }
         console.log(searchInput);
         setSearchInput('')
-    }
-
-    if(isMobile) {
-        style = "d-flex align-items-center position-relative"
-    } else {
-        style = "d-flex align-items-center position-relative col-6";
     }
 
     return (

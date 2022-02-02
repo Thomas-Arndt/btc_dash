@@ -4,7 +4,7 @@ import styles from './NavBar.module.css';
 import SearchBar from './SearchBar';
 
 const NavBar = (props) => {
-    const { setSelectedBlock } = props;
+    const { setSelectedBlock, setSelectedTransaction } = props;
 
     return (
         <div 
@@ -16,7 +16,7 @@ const NavBar = (props) => {
                     dash
                 </span>
             </h1>
-            {!isMobile && <SearchBar setSelectedBlock={setSelectedBlock} />}
+            {!isMobile && <SearchBar setSelectedBlock={setSelectedBlock} setSelectedTransaction={setSelectedTransaction} />}
         </div>
     )
 }

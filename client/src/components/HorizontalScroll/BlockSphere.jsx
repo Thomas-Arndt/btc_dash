@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import styles from './BlockSphere.module.css';
 
 const BlockSphere = (props) => {
-    const { blockData, blockStyle, lockout, selectBlock } = props;
-    const [ transactions, setTransactions ] = useState({});
+    const { blockData, blockStyle, lockout, selectBlock, setSelectedTransaction } = props;
     const [ minFee, setMinFee ] = useState(0);
     const [ maxFee, setMaxFee ] = useState(0);
+    const ref = React.createRef();
     
         useEffect(() => {
             if(blockData.id){
@@ -29,19 +30,10 @@ const BlockSphere = (props) => {
             }
         }, [])
 
-    const diameter = ((blockData.size/1024/1024)/2)*160
-
     const alignment = {alignItems: blockStyle.align}
     
-    const bubbleStyle = {
-        backgroundColor: blockStyle.color,
-        border: '2px solid #FFFFFF',
-        width: '160px',
-        height: '160px',
-        borderRadius: '50%',
-        margin: '7px',
-        textAlign: 'center',
-        zIndex: 1
+    const bubbleColor = {
+        backgroundColor: blockStyle.color
     }    
 
     const dataText = {
@@ -57,8 +49,9 @@ const BlockSphere = (props) => {
 
     const handleSelect = (e) => {
         if(!lockout && blockData.id){
-            selectBlock(blockData.id)
-            console.log(blockData);
+            selectBlock(blockData.id);
+            setSelectedTransaction(null);
+            // console.log(blockData);
         }
     }
 
@@ -67,9 +60,10 @@ const BlockSphere = (props) => {
             className="d-flex"
             style={alignment}>
             <div
+                ref={ref}
                 onClick={handleSelect} 
-                style={bubbleStyle}
-                className="d-flex flex-column justify-content-center">
+                style={bubbleColor}
+                className={blockData.height ? styles.confirmed : styles.pending}>
                 {/*Confirmed Blocks */}
                 {blockData.height && <p style={dataText}>{blockData.height}</p>}
                 {blockData.timestamp && <p style={dataText}>~{Math.floor((moment().unix()-blockData.timestamp)/60)} minutes ago</p>}

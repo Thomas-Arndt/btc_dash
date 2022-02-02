@@ -79,6 +79,11 @@ const TransactionSphere = (props) => {
         navigator.clipboard.writeText(e.target.innerText);
     }
 
+    const  roundTo = (number, place) => {
+        var multiplier = Math.pow(10, place);
+        return Math.round(number*multiplier)/multiplier;
+    }
+
     const handleSelect = (e) => {
         if(!lockout){
             // console.log(transaction);
@@ -138,7 +143,7 @@ const TransactionSphere = (props) => {
                                 <p 
                                     style={dataText} 
                                     className="m-0 text-nowrap" >
-                                        {vout.value/100000000} BTC</p>
+                                        {roundTo((vout.value/100000000),8)} BTC</p>
                             </div>
                         ))}
                     </div>}

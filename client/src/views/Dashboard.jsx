@@ -12,7 +12,9 @@ import SearchBar from '../components/NavBar/SearchBar';
 const Dashboard = () => {
     const [ blocks, setBlocks ] = useState([]);
     const [ pending, setPending ] = useState([]);
+    const [ transactions, setTransactions ] = useState([]);
     const [ selectedBlock, setSelectedBlock ] = useState('');
+    const [ selectedTransaction, setSelectedTransaction ] = useState('');
 
     useEffect(() => {
         axios.get('https://mempool.space/api/v1/fees/mempool-blocks')
@@ -29,13 +31,19 @@ const Dashboard = () => {
                 setSelectedBlock(res.data[0].id)
             })
             .catch(err => console.log(err))
-    }, [])
+    }, []);
 
     return (
         <div className="d-flex flex-column w-100" style={{backgroundColor: '#0E0042'}}>
             <BrowserView>
-                <NavBar setSelectedBlock={setSelectedBlock} />
-                <HorizontalScroll blocks={blocks} pending={pending} selectBlock={setSelectedBlock} />
+                <NavBar 
+                    setSelectedBlock={setSelectedBlock} 
+                    setSelectedTransaction={setSelectedTransaction} />
+                <HorizontalScroll 
+                    blocks={blocks} 
+                    pending={pending} 
+                    selectBlock={setSelectedBlock} 
+                    setSelectedTransaction={setSelectedTransaction} />
                 <div 
                     className="d-flex gap-3 px-3">
                     <FeePriority />
@@ -43,22 +51,38 @@ const Dashboard = () => {
                 </div>
                 <div 
                     className="d-flex gap-3 p-3">
-                    <BlockDetails blockId={selectedBlock} setSelectedBlock={setSelectedBlock} />
-                    <TransactionDetails blockId={selectedBlock}/>
+                    <BlockDetails 
+                        blockId={selectedBlock} 
+                        setSelectedBlock={setSelectedBlock} />
+                    <TransactionDetails 
+                        blockId={selectedBlock} 
+                        transactions={transactions}
+                        setTransactions={setTransactions}
+                        selectedTransaction={selectedTransaction} />
                 </div>
             </BrowserView>
             <MobileView>
                 <div className="d-flex flex-column gap-3 w-100">
                     <NavBar />
                     <div className="d-flex flex-column gap-3 w-100 px-3">
-                        <SearchBar setSelectedBlock={setSelectedBlock} />
+                        <SearchBar 
+                            setSelectedBlock={setSelectedBlock} 
+                            setSelectedTransaction={setSelectedTransaction} />
                         <FeePriority />
                         <ConversionCalculator />
                     </div>
-                    <HorizontalScroll blocks={blocks} pending={pending} selectBlock={setSelectedBlock} />
+                    <HorizontalScroll 
+                        blocks={blocks} 
+                        pending={pending} 
+                        selectBlock={setSelectedBlock}
+                        setSelectedTransaction={setSelectedTransaction} />
                     <div className="d-flex flex-column gap-3 w-100 px-3">
-                        <BlockDetails blockId={selectedBlock} setSelectedBlock={setSelectedBlock} />
-                        <TransactionDetails blockId={selectedBlock}/>
+                        <BlockDetails 
+                            blockId={selectedBlock} 
+                            setSelectedBlock={setSelectedBlock} />
+                        <TransactionDetails 
+                            blockId={selectedBlock} 
+                            selectedTransaction={selectedTransaction} />
                     </div>
                 </div>
             </MobileView>

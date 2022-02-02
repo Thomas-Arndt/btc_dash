@@ -3,25 +3,36 @@ import BlockSphere from './BlockSphere';
 import TransactionSphere from './TransactionSphere';
 
 const HorizontalScroll = (props) => {
-    const { blocks, pending, transactions, selectBlock } = props;
-    const ref = React.createRef();
+    const { blocks, pending, transactions, loadTransactions, selectBlock, selectedBlock, setSelectedTransaction } = props;
     const [ selectLockout, setSelectLockout ] = useState(false);
     const [ scrollLock, setScrollLock ] = useState(false);
     const [ isScrolling, setIsScrolling ] = useState(false);
     const [ clientX, setClientX ] = useState(0);
     const [ scrollX, setScrollX ] = useState(0);
+    const wrapper = React.createRef();
+    const loadPoint = React.createRef();
+    const endPoint = React.createRef();
+    const viewport = React.createRef();
+    const leftBlock = React.createRef();
     let scrollWheel = 0;
 
     useEffect(() => {
         if(blocks){
-            ref.current.scrollLeft = document.getElementById('rightBlock').offsetLeft-(window.innerWidth/2);
+            wrapper.current.scrollLeft = document.getElementById('rightBlock').offsetLeft-(window.innerWidth/2);
             setScrollX(document.getElementById('rightBlock').offsetLeft-(window.innerWidth/2));
         }
         if(transactions){
-            ref.current.scrollLeft = 0;
+            wrapper.current.scrollLeft = 0;
             setScrollX(0);
         }
-    }, []);
+    }, [selectedBlock]);
+
+    const reachLoadPoint = () => {
+        // console.log(`vL: ${viewport.current.offsetLeft} | eL: ${loadPoint.current.offsetLeft} | vR: ${viewport.current.offsetWidth} | eR: ${(loadPoint.current.offsetLeft+leftBlock.current.offsetWidth)-(scrollX+viewport.current.offsetWidth)}`);
+        if(transactions && ((loadPoint.current.offsetLeft+leftBlock.current.offsetWidth)-(scrollX+viewport.current.offsetWidth))<0){
+            loadTransactions();
+        }
+    }
 
     const onPointerDown = (e) => {
         setIsScrolling(true);
@@ -33,15 +44,16 @@ const HorizontalScroll = (props) => {
     const onPointerUp = (e) => {
         setIsScrolling(false);
         scrollX < 0 && setScrollX(0);
-        ref.current.scrollLeft <= 0 && (ref.current.scrollLeft = 0);
+        wrapper.current.scrollLeft <= 0 && (wrapper.current.scrollLeft = 0);
 
     }
     
     const onPointerMove = (e) => {
+        reachLoadPoint();
         if(isScrolling){
             setSelectLockout(true);
             const eventClientX = e.clientX;
-            ref.current.scrollLeft = scrollX + eventClientX - clientX;
+            wrapper.current.scrollLeft = scrollX + eventClientX - clientX;
             scrollX - (eventClientX - clientX) >= 0 ?
                 setScrollX(scrollX - (eventClientX - clientX)) :
                 setScrollX(0);
@@ -50,21 +62,19 @@ const HorizontalScroll = (props) => {
     }
 
     const onWheelMove = (e) => {
+        reachLoadPoint();
+        if(blocks && ((endPoint.current.offsetLeft+leftBlock.current.offsetWidth)-(scrollX+viewport.current.offsetWidth))<0){
+            // do something to stop scrolling
+        }
         if(!scrollLock){
             const scrollSpeed = 0.5;
-            // && ref.current.scrollLeft+window.innerWidth < ref.current.scrollWidth
             if(scrollX + e.deltaY*scrollSpeed > 0){
                 scrollWheel+=(e.deltaY*scrollSpeed);
-                ref.current.scrollLeft = scrollX + scrollWheel;
+                wrapper.current.scrollLeft = scrollX + scrollWheel;
                 setScrollX(scrollX + scrollWheel);
-                // console.log(`scrollWidth: ${ref.current.scrollWidth} | scrollLeft: ${ref.current.scrollLeft}`);
             }
-            // else if(ref.current.scrollLeft+window.innerWidth === ref.current.scrollWidth && e.deltaY > 0){
-            //     ref.current.scrollLeft = ref.current.scrollWidth;
-            //     setScrollX(ref.current.scrollWidth);
-            // }
             else{
-                ref.current.scrollLeft = 0;
+                wrapper.current.scrollLeft = 0;
                 setScrollX(0);
             }
         }
@@ -72,9 +82,10 @@ const HorizontalScroll = (props) => {
 
     return (
         <div 
-            className="d-flex flex-column position-relative">
+            ref={viewport}
+            className="d-flex flex-column position-relative w-100">
             <div
-                ref={ref}
+                ref={wrapper}
                 onPointerDown={onPointerDown}
                 onPointerUp={onPointerUp}
                 onPointerMove={onPointerMove}
@@ -83,6 +94,7 @@ const HorizontalScroll = (props) => {
                 className="d-flex w-100 overflow-auto mx-auto py-3"
                 style={{backgroundColor: '#0E0042', height: 'fit-content', touchAction: 'none'}}>
                 <div
+                    ref={leftBlock}
                     className="d-flex px-1">
                     {pending && pending.map((block, i) =>
                         <BlockSphere key={i} 
@@ -103,8 +115,10 @@ const HorizontalScroll = (props) => {
                             blockData={block} 
                             blockStyle={{color: '#FF6600', align: 'end'}}
                             lockout={selectLockout}
-                            selectBlock={selectBlock} />
-                    )};
+                            selectBlock={selectBlock}
+                            setSelectedTransaction={setSelectedTransaction} />
+                            )};
+                    {blocks && <div ref={endPoint} style={{color: 'white'}}></div>}
                 </div>
                 <div className="d-flex px-2 position-relative">
                     {transactions && <div style={{position: 'absolute', top: '50%', borderBottom: '2px dashed white', height: '1px', width: '95%', marginLeft: '25px', zIndex: '0'}}></div>}
@@ -116,7 +130,8 @@ const HorizontalScroll = (props) => {
                             selectBlock={selectBlock}
                             setScrollLock={setScrollLock}
                             scrollLock={scrollLock} />
-                    )}
+                        )}
+                    {transactions && <div ref={loadPoint} style={{color: 'white'}}></div>}
                 </div>
             </div>
             <div
