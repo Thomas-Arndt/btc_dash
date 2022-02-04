@@ -1,1 +1,1 @@
-This is the firt code for my MERN stack project.
+A Bitcoin blockchain explorer with a simple to use user interface.
