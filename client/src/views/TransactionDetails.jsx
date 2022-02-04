@@ -5,17 +5,22 @@ import HorizontalScroll from '../components/HorizontalScroll/HorizontalScroll';
 import TransactionDetailsHeader from '../components/TransactionDetails/TransactionDetailsHeader';
 
 const TransactionDetails = (props) => {
-    const { blockId, transactions, setTransactions } = props;
+    const { blockId, transactions, setTransactions, selectedTransaction } = props;
     const [ transactionCount, setTransactionCount ] = useState(25);
     let style = "";
 
     useEffect(() => {
-        axios.get(`https://mempool.space/api/block/${blockId}/txids`)
-            .then(res => {
-                setTransactions(res.data);
-            })
-            .catch(err => console.log(err))
-    }, [blockId]);
+        if(selectedTransaction){
+            setTransactions([selectedTransaction])
+        } else {
+            axios.get(`https://mempool.space/api/block/${blockId}/txids`)
+                .then(res => {
+                    // console.log(res.data);
+                    setTransactions(res.data);
+                })
+                .catch(err => console.log(err))
+        }
+    }, [blockId, selectedTransaction]);
 
     if(isMobile){
         style = "py-3 col-12"
@@ -35,7 +40,8 @@ const TransactionDetails = (props) => {
             <HorizontalScroll 
                 transactions={[...transactions.slice(0,transactionCount)]} 
                 loadTransactions={loadMore} 
-                selectedBlock={blockId} />
+                selectedBlock={blockId}
+                selectedTransaction={selectedTransaction} />
         </div>
     )
 }

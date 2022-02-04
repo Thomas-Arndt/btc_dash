@@ -31,7 +31,8 @@ const Dashboard = () => {
                 setSelectedBlock(res.data[0].id)
             })
             .catch(err => console.log(err))
-    }, []);
+
+    },[]);
 
     return (
         <div className="d-flex flex-column w-100" style={{backgroundColor: '#0E0042'}}>

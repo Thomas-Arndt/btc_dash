@@ -3,7 +3,7 @@ import BlockSphere from './BlockSphere';
 import TransactionSphere from './TransactionSphere';
 
 const HorizontalScroll = (props) => {
-    const { blocks, pending, transactions, loadTransactions, selectBlock, selectedBlock, setSelectedTransaction } = props;
+    const { blocks, pending, transactions, loadTransactions, selectBlock, selectedBlock, setSelectedTransaction, selectedTransaction } = props;
     const [ selectLockout, setSelectLockout ] = useState(false);
     const [ scrollLock, setScrollLock ] = useState(false);
     const [ isScrolling, setIsScrolling ] = useState(false);
@@ -25,7 +25,7 @@ const HorizontalScroll = (props) => {
             wrapper.current.scrollLeft = 0;
             setScrollX(0);
         }
-    }, [selectedBlock]);
+    }, [selectedBlock, selectedTransaction]);
 
     const reachLoadPoint = () => {
         // console.log(`vL: ${viewport.current.offsetLeft} | eL: ${loadPoint.current.offsetLeft} | vR: ${viewport.current.offsetWidth} | eR: ${(loadPoint.current.offsetLeft+leftBlock.current.offsetWidth)-(scrollX+viewport.current.offsetWidth)}`);
@@ -101,7 +101,7 @@ const HorizontalScroll = (props) => {
                             blockData={block}
                             blockStyle={{color: '#777777', align: 'end'}}
                             lockout={selectLockout} />
-                    )};
+                    )}
                 </div>
                 {pending && <div style={{borderRight: '2px dotted white'}}></div>}
                 <div id="rightBlock" className="d-flex px-2 position-relative">
@@ -117,17 +117,19 @@ const HorizontalScroll = (props) => {
                             lockout={selectLockout}
                             selectBlock={selectBlock}
                             setSelectedTransaction={setSelectedTransaction} />
-                            )};
+                            )}
                     {blocks && <div ref={endPoint} style={{color: 'white'}}></div>}
                 </div>
-                <div className="d-flex px-2 position-relative">
-                    {transactions && <div style={{position: 'absolute', top: '50%', borderBottom: '2px dashed white', height: '1px', width: '95%', marginLeft: '25px', zIndex: '0'}}></div>}
+                <div
+                    className="d-flex px-2 position-relative">
+                    {transactions && !selectedTransaction && <div style={{position: 'absolute', top: '50%', borderBottom: '2px dotted white', height: '1px', width: '95%', marginLeft: '25px', zIndex: '0'}}></div>}
                     {transactions && transactions.map((txn, i) =>
                         <TransactionSphere key={i} 
                             transactionId={txn} 
                             blockStyle={{color: '#FF6600', align: 'center'}}
                             lockout={selectLockout}
-                            selectBlock={selectBlock}
+                            selectedBlock={selectedBlock}
+                            selectedTransaction={selectedTransaction}
                             setScrollLock={setScrollLock}
                             scrollLock={scrollLock} />
                         )}

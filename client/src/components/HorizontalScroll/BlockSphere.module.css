@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+.dataText{
+    margin: 0;
+    user-select: none;
+    color: white;
+}
+
 .confirmed{
     display: flex;
     flex-direction: column;

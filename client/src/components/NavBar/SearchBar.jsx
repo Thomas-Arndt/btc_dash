@@ -26,23 +26,15 @@ const SearchBar = (props) => {
         }
         else if (searchInput.length === 64 && searchInput.startsWith('0'*7)){
             setSelectedBlock(searchInput);
-        }
-        else {
+        } else {
             axios.get(`https://mempool.space/api/tx/${searchInput}/status`)
                 .then(res => {
                     // console.log(res.data);
                     setSelectedBlock(res.data.block_hash);
                 })
                 .catch(err => console.log(err))
-            // axios.get(`https://mempool.space/api/tx/${searchInput}`)
-            //     .then(res => {
-            //         console.log(res.data);
-            //         setSelectedTransaction(res.data);
-            //     })
-            //     .catch(err => console.log(err))
             setSelectedTransaction(searchInput)
         }
-        console.log(searchInput);
         setSearchInput('')
     }
 
@@ -52,8 +44,8 @@ const SearchBar = (props) => {
                 type="text"
                 value={searchInput}
                 onChange={(e)=>setSearchInput(e.target.value)}
-                className="form-control p-1"
-                style={{border: '3px solid #ff6600', borderRadius: '7px', fontSize: '20px'}}
+                className="form-control"
+                style={{border: '3px solid #ff6600', borderRadius: '7px', fontSize: '20px', padding: '5px 38px 5px 5px'}}
                 placeholder="TXID, block height, or hash" />
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 

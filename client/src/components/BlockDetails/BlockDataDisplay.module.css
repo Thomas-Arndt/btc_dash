@@ -1,0 +1,36 @@
+.dataRow{
+    display: flex;
+    align-items: end;
+    width: 100%;
+    margin: 8px 0;
+    gap: 5px;
+}
+
+.dataLabel{
+    margin: 0;
+    color: #FF6600;
+    white-space: nowrap;
+}
+
+.dottedLine{
+    width: 100%;
+    border-bottom: 2px dotted white;
+}
+
+.dataText{
+    color: white;
+    margin: 0;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.hashText{
+    color: white;
+    margin: 0;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 75%;
+    cursor: pointer;
+}

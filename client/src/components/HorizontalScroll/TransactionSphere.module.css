@@ -4,6 +4,137 @@
     box-sizing: border-box;
 }
 
+.previewText{
+    margin: 0;
+    user-select: none;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.dataText{
+    margin: 0;
+    user-select: none;
+    color: white;
+    font-size: 11px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.detailsHeader{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    user-select: none;
+    text-decoration: underline;
+    pointer-events: none;
+}
+
+.overFlowEllipsis{
+    user-select: none;
+    color: white;
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0;
+}
+
+.expand{
+    animation: expandData;
+    animation-duration: 0.6s;
+    animation-fill-mode: forwards;
+}
+
 .txnScroll::-webkit-scrollbar{
     display: none;
+}
+
+.preview{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #FFFFFF;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    margin: 7px;
+    text-align: center;
+    z-index: 1;
+}
+
+.deselected{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #FFFFFF;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    margin: 7px;
+    text-align: center;
+    z-index: 1;
+    animation-name: close;
+    animation-duration: 0.6s;
+    animation-fill-mode: forwards;
+}
+
+.selected{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #FFFFFF;
+    width: 325px;
+    height: 160px;
+    border-radius: 30px;
+    margin: 7px;
+    text-align: center;
+    z-index: 1;
+    animation-name: open;
+    animation-duration: 0.6s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes open {
+    from{
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+    }
+
+    to{
+        width: 325px;
+        height: 160px;
+        border-radius: 30px;
+    }
+}
+
+@keyframes close {
+    from{
+        width: 325px;
+        height: 160px;
+        border-radius: 30px;
+    }
+    
+    to{
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+    }
+}
+
+@keyframes expandData {
+    from{
+        width: 0;
+    }
+
+    to{
+        width: 300px;
+    }
 }

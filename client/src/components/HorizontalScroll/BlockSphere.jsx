@@ -36,12 +36,6 @@ const BlockSphere = (props) => {
         backgroundColor: blockStyle.color
     }    
 
-    const dataText = {
-        margin: '0',
-        userSelect: 'none',
-        color: 'white'
-    }
-
     const  roundTo = (number, place) => {
         var multiplier = Math.pow(10, place);
         return Math.round(number*multiplier)/multiplier;
@@ -65,16 +59,16 @@ const BlockSphere = (props) => {
                 style={bubbleColor}
                 className={blockData.height ? styles.confirmed : styles.pending}>
                 {/*Confirmed Blocks */}
-                {blockData.height && <p style={dataText}>{blockData.height}</p>}
-                {blockData.timestamp && <p style={dataText}>~{Math.floor((moment().unix()-blockData.timestamp)/60)} minutes ago</p>}
-                {blockData.tx_count && <p style={dataText}>{blockData.tx_count} transactions</p>}
-                {blockData.id && <p style={dataText}>{Math.floor(minFee)}-{Math.floor(maxFee)} sat/vB</p>}
-                {blockData.size && <p style={dataText}>{roundTo(blockData.size/1024/1024, 2)} MB</p>}
+                {blockData.height && <p className={styles.dataText}>{blockData.height}</p>}
+                {blockData.timestamp && <p className={styles.dataText}>~{Math.floor((moment().unix()-blockData.timestamp)/60)} minutes ago</p>}
+                {blockData.tx_count && <p className={styles.dataText}>{blockData.tx_count.toLocaleString('en-US')} transactions</p>}
+                {blockData.id && <p className={styles.dataText}>{Math.floor(minFee)}-{Math.floor(maxFee)} sat/vB</p>}
+                {blockData.size && <p className={styles.dataText}>{roundTo(blockData.size/1024/1024, 2)} MB</p>}
                 {/* Pending Blocks */}
-                {blockData.medianFee && <p style={dataText}>~{Math.round(blockData.medianFee)} sat/vB</p>}
-                {blockData.feeRange && <p style={dataText}>{Math.round(blockData.feeRange[0])}-{Math.round(blockData.feeRange[blockData.feeRange.length-1])} sat/vB</p>}
-                {blockData.nTx && <p style={dataText}>{blockData.nTx} transactions</p>}
-                {blockData.blockSize && <p style={dataText}>{roundTo((blockData.blockSize/1024/1024),2)} MB</p>}
+                {blockData.medianFee && <p className={styles.dataText}>~{Math.round(blockData.medianFee)} sat/vB</p>}
+                {blockData.feeRange && <p className={styles.dataText}>{Math.round(blockData.feeRange[0])}-{Math.round(blockData.feeRange[blockData.feeRange.length-1].toLocaleString('en-US'))} sat/vB</p>}
+                {blockData.nTx && <p className={styles.dataText}>{blockData.nTx.toLocaleString('en-US')} transactions</p>}
+                {blockData.blockSize && <p className={styles.dataText}>{roundTo((blockData.blockSize/1024/1024),2)} MB</p>}
             </div>
         </div>
     )
