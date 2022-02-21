@@ -12,7 +12,6 @@ import SearchBar from '../components/NavBar/SearchBar';
 const Dashboard = () => {
     const [ blocks, setBlocks ] = useState([]);
     const [ pending, setPending ] = useState([]);
-    const [ transactions, setTransactions ] = useState([]);
     const [ selectedBlock, setSelectedBlock ] = useState('');
     const [ selectedTransaction, setSelectedTransaction ] = useState('');
 
@@ -57,8 +56,6 @@ const Dashboard = () => {
                         setSelectedBlock={setSelectedBlock} />
                     <TransactionDetails 
                         blockId={selectedBlock} 
-                        transactions={transactions}
-                        setTransactions={setTransactions}
                         selectedTransaction={selectedTransaction} />
                 </div>
             </BrowserView>

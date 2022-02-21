@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './TransactionSphere.module.css';
 
 const TransactionSphere = (props) => {
-    const { transactionId, blockStyle, lockout, selectedBlock, selectedTransaction, setScrollLock, scrollLock } = props;
+    const { transactionId, blockStyle, lockout, setScrollLock, scrollLock } = props;
     const [ transactionAmount, setTransactionAmount ] = useState(null);
     const [ transaction, setTransaction ] = useState(null);
     const [ selected, setSelected ] = useState(false);
@@ -41,6 +41,7 @@ const TransactionSphere = (props) => {
     }
 
     const handleSelect = (e) => {
+        console.log(transactionId);
         let element = null;
         if(e.target.getAttribute('name')==="transactionBubble"){
             element = e.target;

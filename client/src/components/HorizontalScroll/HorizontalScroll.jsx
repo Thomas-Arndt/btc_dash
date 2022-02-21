@@ -25,10 +25,9 @@ const HorizontalScroll = (props) => {
             wrapper.current.scrollLeft = 0;
             setScrollX(0);
         }
-    }, [selectedBlock, selectedTransaction]);
+    }, [selectedBlock, selectedTransaction, blocks]);
 
     const reachLoadPoint = () => {
-        // console.log(`vL: ${viewport.current.offsetLeft} | eL: ${loadPoint.current.offsetLeft} | vR: ${viewport.current.offsetWidth} | eR: ${(loadPoint.current.offsetLeft+leftBlock.current.offsetWidth)-(scrollX+viewport.current.offsetWidth)}`);
         if(transactions && ((loadPoint.current.offsetLeft+leftBlock.current.offsetWidth)-(scrollX+viewport.current.offsetWidth))<0){
             loadTransactions();
         }

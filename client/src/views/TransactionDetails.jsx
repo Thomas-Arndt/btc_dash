@@ -5,7 +5,8 @@ import HorizontalScroll from '../components/HorizontalScroll/HorizontalScroll';
 import TransactionDetailsHeader from '../components/TransactionDetails/TransactionDetailsHeader';
 
 const TransactionDetails = (props) => {
-    const { blockId, transactions, setTransactions, selectedTransaction } = props;
+    const { blockId, selectedTransaction } = props;
+    const [ transactions, setTransactions ] = useState([]);
     const [ transactionCount, setTransactionCount ] = useState(25);
     let style = "";
 
@@ -16,7 +17,7 @@ const TransactionDetails = (props) => {
             axios.get(`https://mempool.space/api/block/${blockId}/txids`)
                 .then(res => {
                     // console.log(res.data);
-                    setTransactions(res.data);
+                    setTransactions([...res.data].slice(0, transactionCount));
                 })
                 .catch(err => console.log(err))
         }
@@ -38,7 +39,7 @@ const TransactionDetails = (props) => {
         <div className={style} style={{border: '2px solid #CC33CC', borderRadius: '7px', flex: 1}}>
             <TransactionDetailsHeader />
             <HorizontalScroll 
-                transactions={[...transactions.slice(0,transactionCount)]} 
+                transactions={transactions}
                 loadTransactions={loadMore} 
                 selectedBlock={blockId}
                 selectedTransaction={selectedTransaction} />
